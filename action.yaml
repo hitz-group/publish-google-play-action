@@ -1,0 +1,24 @@
+name: 'Upload Android Release to Play Store'
+description: 'An action to upload a signed Android release (.apk ) to the Google Play Store Developer Console'
+author: 'sravan till'
+inputs:
+  client_email:
+    description: 'client email in key file of google play console'
+    required: true
+  private_key:
+    description: 'private key in key file of google play console'
+    required: true
+  releaseFilePath:
+    description: 'The Android release file to upload (.apk)'
+    required: true
+  releaseNotes:
+    description: 'the text of release update'
+    default: 'This is automated release.'
+    required: true
+  track:
+    description: 'The track in which you want to assign the uploaded app.'
+    default: 'internal'
+    required: true
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
