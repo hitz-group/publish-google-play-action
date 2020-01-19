@@ -1,9 +1,7 @@
 import {upload} from "../src/upload";
 import {createJWT,parseManifest,EditOptions,getKeys} from "../src/helpers";
 import {androidpublisher_v3 } from "googleapis";
-import * as core from '@actions/core';
 import * as helpers from '../src/helpers';
-require('dotenv').config();
 
 describe('Test all methods in the upload class', () => {
     

@@ -1,7 +1,5 @@
 import * as helpers from '../src/helpers';
 import {authenticate,parseManifest,createJWT,checkFileExist,getKeys} from '../src/helpers';
-import * as core from '@actions/core';
-require('dotenv').config();
 
 describe("JWT generation and authentication",() =>{
 

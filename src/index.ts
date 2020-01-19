@@ -8,8 +8,6 @@ import {parseManifest, IPackageManifest, checkFileExist, createJWT, getKeys} fro
 
 import * as core from '@actions/core';
 
-require('dotenv').config();
-
 export async function run() {
     try {
 

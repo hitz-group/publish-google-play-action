@@ -8,7 +8,6 @@ import {authenticate,EditOptions} from "./helpers";
 import AndroidPublisher = androidpublisher_v3.Androidpublisher
 import AppEdit = androidpublisher_v3.Schema$AppEdit;
 import Apk = androidpublisher_v3.Schema$Apk;
-import LocalizedText = androidpublisher_v3.Schema$LocalizedText;
 import Track = androidpublisher_v3.Schema$Track;
 
 export class upload{
