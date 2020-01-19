@@ -2,6 +2,7 @@ import { androidpublisher_v3 }  from "googleapis";
 import LocalizedText = androidpublisher_v3.Schema$LocalizedText;
 import {JWT} from "google-auth-library/build/src/auth/jwtclient";
 import * as fs from "fs";
+import * as core from '@actions/core';
 var ApkReader = require('node-apk-parser')
 const {google} = require('googleapis');
 
@@ -66,7 +67,7 @@ export const  authenticate = async(auth: JWT): Promise<boolean> => {
 
 export const getKeys = (): keyJSON =>{
   return({
-    "private_key": process.env.private_key || "",
-    "client_email": process.env.client_email || ""
+    "private_key": core.getInput('private_key', { required: true }) ,
+    "client_email": core.getInput('client_email', { required: true })
   })
 }

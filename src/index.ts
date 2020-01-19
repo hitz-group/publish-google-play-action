@@ -6,6 +6,8 @@ import LocalizedText = androidpublisher_v3.Schema$LocalizedText;
 
 import {parseManifest, IPackageManifest, checkFileExist, createJWT, getKeys} from './helpers';
 
+import * as core from '@actions/core';
+
 require('dotenv').config();
 
 export async function run() {
@@ -13,14 +15,16 @@ export async function run() {
 
         let keyJson = getKeys();
 
+        const releaseNotesFromInputs = core.getInput('releaseNotes', { required: true });
+
         const releaseNotes:LocalizedText = {
             language:"en-US",
-            text:process.env.releaseNotes
+            text:releaseNotesFromInputs
         }
 
-        const releaseFile = process.env.releaseFilePath || "";
+        const releaseFile = core.getInput('releaseFilePath', { required: true });
 
-        const track  = process.env.track;
+        const track  = core.getInput('track', { required: true });
 
         checkFileExist(releaseFile);
 

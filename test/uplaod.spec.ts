@@ -1,14 +1,20 @@
 import {upload} from "../src/upload";
 import {createJWT,parseManifest,EditOptions,getKeys} from "../src/helpers";
 import {androidpublisher_v3 } from "googleapis";
+import * as core from '@actions/core';
+import * as helpers from '../src/helpers';
 require('dotenv').config();
 
 describe('Test all methods in the upload class', () => {
     
     /*----creating object----*/
-    let OriginalKeys = getKeys();
+    let OriginalKeys = {
+        "private_key": "private key",
+        "client_email": "clientEmail@client.email"
+    }
+
     let jwtObjOriginal = createJWT(OriginalKeys);
-    let releaseFile = process.env.releaseFilePath || "";
+    let releaseFile = 'release/app.apk';
     let editOptionsObj:EditOptions= {
         apkManifest:{
             packageName:"com.example.com",
@@ -80,6 +86,9 @@ describe('Test all methods in the upload class', () => {
     /*----ending jest spyOn ----*/
 
     it("Main method uploadRelease - method in upload class",async() =>{
+        jest.spyOn(helpers,'authenticate').mockImplementation(()=>{
+            return Promise.resolve(true)
+        })
         let data  = await OriginalUploadObj.uploadRelease();
         expect(data.id).toBe('10');
     })

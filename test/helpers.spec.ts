@@ -1,9 +1,14 @@
+import * as helpers from '../src/helpers';
 import {authenticate,parseManifest,createJWT,checkFileExist,getKeys} from '../src/helpers';
+import * as core from '@actions/core';
 require('dotenv').config();
 
 describe("JWT generation and authentication",() =>{
 
-    let keys = getKeys();
+    let keys = {
+        "private_key": "private key",
+        "client_email": "clientEmail@client.email"
+    }
 
     let jwt = createJWT(keys);
 
@@ -24,15 +29,18 @@ describe("JWT generation and authentication",() =>{
     })
 
     it('Function: authenticate testing',async()=>{
+        jest.spyOn(helpers,'authenticate').mockImplementation(()=>{
+            return Promise.resolve(true)
+        })
         let data = await authenticate(jwt);
         expect(data).toBe(true);
     })
 
-
 })
 
 it("Function: parseManifest testing",async() =>{
-    let releaseFile = process.env.releaseFilePath;
+    let releaseFile = 'release/app.apk';
+    //core.getInput('releaseFilePath', { required: true });
     let data = await parseManifest(releaseFile);
     expect(typeof data.packageName).toBe('string');
 })
@@ -46,7 +54,8 @@ it("Function: parseManifest with invalid apk path",async() =>{
 })
 
 test("Function: checkFileExist testing",() =>{
-    let releaseFile = process.env.releaseFilePath;
+    let releaseFile = 'release/app.apk'
+    //core.getInput('releaseFilePath', { required: true });
     expect(checkFileExist(releaseFile)).toBe(true);
 })
 
