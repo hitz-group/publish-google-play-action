@@ -1,52 +1,56 @@
-import {upload} from "./upload";
+import { upload } from "./upload";
 
-import { androidpublisher_v3 }  from "googleapis";
+import { androidpublisher_v3 } from "googleapis";
 
 import LocalizedText = androidpublisher_v3.Schema$LocalizedText;
 
-import {parseManifest, IPackageManifest, checkFileExist, createJWT, getKeys} from './helpers';
+import {
+  parseManifest,
+  IPackageManifest,
+  checkFileExist,
+  createJWT,
+  getKeys
+} from "./helpers";
 
-import * as core from '@actions/core';
+import * as core from "@actions/core";
 
 export async function run() {
-    try {
+  try {
+    let keyJson = getKeys();
 
-        let keyJson = getKeys();
+    const releaseNotesFromInputs = core.getInput("releaseNotes", {
+      required: true
+    });
 
-        const releaseNotesFromInputs = core.getInput('releaseNotes', { required: true });
+    const releaseNotes: LocalizedText = {
+      language: "en-US",
+      text: releaseNotesFromInputs
+    };
 
-        const releaseNotes:LocalizedText = {
-            language:"en-US",
-            text:releaseNotesFromInputs
-        }
+    const releaseFile = core.getInput("releaseFilePath", { required: true });
 
-        const releaseFile = core.getInput('releaseFilePath', { required: true });
+    const track = core.getInput("track", { required: true });
 
-        const track  = core.getInput('track', { required: true });
+    checkFileExist(releaseFile);
 
-        checkFileExist(releaseFile);
+    let manifestDetails: IPackageManifest = await parseManifest(releaseFile);
 
-        let manifestDetails:IPackageManifest = await parseManifest(releaseFile);
-    
-        const authClient = createJWT(keyJson);
+    const authClient = createJWT(keyJson);
 
-        let editOptions = {
-            apkManifest: manifestDetails,
-            track: track,
-            releaseNotes: [releaseNotes],
-        }
-        
-        let uploadObj = new upload(authClient, editOptions, releaseFile );
+    let editOptions = {
+      apkManifest: manifestDetails,
+      track: track,
+      releaseNotes: [releaseNotes]
+    };
 
-        await uploadObj.uploadRelease();
+    let uploadObj = new upload(authClient, editOptions, releaseFile);
 
-        console.log(`Finished uploading ${releaseFile} to the Play Store`)
-        
-    } catch (error) {
+    await uploadObj.uploadRelease();
 
-        console.log(error.message);
-
-    }
+    console.log(`Finished uploading ${releaseFile} to the Play Store`);
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 run();
