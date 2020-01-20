@@ -5,8 +5,8 @@ This action will help you upload an Android `.apk` (Android App) file to the Goo
 ## Dev setting the project
 
 1) Clone the project
-2) Mention correct private_key and client_email in key.json
-3) `create .env` file and mention `releaseNotes`,`track`,`releaseFilePath` variables
+2) `create .env` file and mention `private_key`,`client_email`,`releaseNotes`,`track`,`releaseFilePath` variables
+3) replace the `core.input('variable')` with `process.env.variable` and import `require('dotenv').config()`
 4) Keep the apk which you want to upload in release folder (default name: app.apk)
 5) `npm install`
 6) `tsc` for building and compiling typescript files.
