@@ -2,8 +2,7 @@
 
 This action will help you upload an Android `.apk` (Android App) file to the Google Play Console using the Google Play Developer API v3.
 
-
-# Dev setting the project
+## Dev setting the project
 
 1) Clone the project
 2) Mention correct private_key and client_email in key.json
@@ -17,26 +16,35 @@ This action will help you upload an Android `.apk` (Android App) file to the Goo
 
 ## Inputs
 
-### `private_key` (given from key.json)
+### `private_key` ( which is private_key in Gplay key file )
 
 **Required:** The service account private key.
 
-### `client_email` (given from key.json)
+### `client_email` (which is client_email in Gplay key file )
 
 **Required:** The service account client email.
 
-### `releaseFilePath` (given from environment)
+### `releaseFilePath`
 
 **Required:** The Android release file to upload (path of .apk)
 
-### `releaseNotes` (given from environment)
+### `releaseNotes`
 
-**Required:** Release notes with information
+**default:** This is automated release.
+Pass the value if you want to change the release notes.
 
-### `track` (given from environment)
+### `track`
 
-**Required:** The track in which you want to assign the uploaded app.  
+**default:** internal.
 _Values:_ `alpha`, `beta`, `internal`, `production`
 
 ## Example usage
-  please check the auto_push.yml file in workflows of .github folder.
+
+    - name: upload to play store
+      uses: hitz-group/publish-google-play-action@master
+      with:
+          client_email: ${{ secrets.GPLAY_SERVICE_ACCOUNT_EMAIL }}
+          private_key: ${{ secrets.GPLAY_SERVICE_ACCOUNT_PRIVATE_KEY }}
+          releaseFilePath: "path/to/apk"
+          releaseNotes: "this is the automated release"
+          track: internal

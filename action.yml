@@ -14,11 +14,11 @@ inputs:
   releaseNotes:
     description: 'the text of release update'
     default: 'This is automated release.'
-    required: true
+    required: false
   track:
     description: 'The track in which you want to assign the uploaded app.'
     default: 'internal'
-    required: true
+    required: false
 runs:
   using: 'node12'
   main: 'lib/index.js'
